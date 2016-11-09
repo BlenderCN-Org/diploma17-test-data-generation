@@ -10,31 +10,31 @@ https://github.com/sanchousic/diploma17-test-data-generation/
 """
 
 
-def action_n_times_with_similar_parameters(parameters):
-    """ get sequence with n the same actions
+def action_times_with_similar_parameters(parameters):
+    """generate sequence with n the same actions
 
-    :param parameters: (action, action_parameters, frames) where
+    :param parameters: (action, action_parameters, length) where
         action: action function
-        action_parameters: parametrers for action
-        frames: n
-    :return: sequence [(action, action_parameters), ... (action, action_parameters)] with length = frames
+        action_parameters: parameters for action
+        length: n
+    :return: sequence [(action, action_parameters), ... (action, action_parameters)] with length length
     """
-    action, action_parameters, frames = parameters
+    action, action_parameters, length = parameters
     sequence = []
     pair = (action, action_parameters)
-    for i in range(frames):
+    for i in range(length):
         sequence.append(pair)
     return sequence
 
 
 def action_n_times_with_different_parameters(parameters):
-    """ get sequence with n the same type of actions but different in parameters for them
+    """generate sequence with n the same type of actions but different in parameters for them
 
     :param parameters: (action, array_of_action_parameters) where
         action: action function
         array_of_action_parameters: [action_parameters_1, ... action_parameter_n] with length n where
             action_parameters_i: parameters for action on i iteration where i = 1..n
-    :return: sequence [(action, action_parameters_1), ... (action, action_parameters_n)] with length = frames
+    :return: sequence [(action, action_parameters_1), ... (action, action_parameters_n)] with length length
     """
     action, array_of_action_parameters = parameters
     sequence = []
