@@ -5,7 +5,7 @@ found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-g
 
 This file contains default complex generators of sequences.
 Complex generator means that this generator returns (sequence, log) where
-log's structure is depends on complex generator.
+log's structure depends on complex generator.
 
 Information about sequences can be found in the sequence.py file which is contained in repository at
 https://github.com/sanchousic/diploma17-test-data-generation/
