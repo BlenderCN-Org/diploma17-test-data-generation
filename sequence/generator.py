@@ -5,13 +5,13 @@ found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-g
 
 This file contains default generators of sequences.
 
-Information about sequences can be found in the sequence.py file which is contained in repository at
-https://github.com/sanchousic/diploma17-test-data-generation/
+Information about sequences can be found in the sequence.py file at
+https://github.com/sanchousic/diploma17-test-data-generation/blob/master/sequence/sequence.py
 """
 
 
 def action_times_with_similar_parameters(parameters):
-    """generate sequence with n the same actions
+    """ generate sequence with n the same actions
 
     :param parameters: (action, action_parameters, length) where
         action: action function
@@ -28,7 +28,7 @@ def action_times_with_similar_parameters(parameters):
 
 
 def action_n_times_with_different_parameters(parameters):
-    """generate sequence with n the same type of actions but different in parameters for them
+    """ generate sequence with n the same type of actions but different in parameters for them
 
     :param parameters: (action, array_of_action_parameters) where
         action: action function

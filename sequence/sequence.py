@@ -8,8 +8,8 @@ Sequence is an array of pairs.
 Pair is a tuple (action, parameters) created for action(parameters) execution
 Snapshot_function: function with type: function(parameter: int): void
 
-Information about actions can be found in the action.py file which is contained in repository at
-https://github.com/sanchousic/diploma17-test-data-generation/
+Information about actions can be found in the sequence.action.py at
+https://github.com/sanchousic/diploma17-test-data-generation/blob/master/sequence/action.py
 """
 
 
