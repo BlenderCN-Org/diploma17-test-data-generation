@@ -4,8 +4,9 @@ Use of this source code is governed by an MIT-style license that can be 
 found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-generation/blob/master/LICENSE
 
 This file contains a set of actions specified for blender's objects.
-Information about actions can be found in the action.py file which is contained in repository at
-https://github.com/sanchousic/diploma17-test-data-generation/
+
+Information about actions can be found in the sequence.action.py at
+https://github.com/sanchousic/diploma17-test-data-generation/blob/master/sequence/action.py
 """
 import math
 import mathutils

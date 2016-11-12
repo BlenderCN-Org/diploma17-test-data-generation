@@ -5,8 +5,8 @@ found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-g
 
 This file contains default generators of sequences specified for blender.
 
-Information about sequences can be found in the sequence.py file which is contained in repository at
-https://github.com/sanchousic/diploma17-test-data-generation/
+Information about sequences can be found in the sequence.py file at
+https://github.com/sanchousic/diploma17-test-data-generation/blob/master/sequence/sequence.py
 """
 import math
 import random
@@ -18,7 +18,7 @@ from blender_sequence import action
 
 # TODO: everything
 def direct_object_motion(parameters):
-    """generate sequence of direct movements of blender's object with direction in its coordinates
+    """ generate sequence of direct movements of blender's object with direction in its coordinates
 
     :param parameters: (_object, direction, length, min_speed, max_speed) where
         _object: blender's object
@@ -48,7 +48,7 @@ def direct_object_motion(parameters):
 
 # TODO: everything
 def z_sitting_x_rotation_motion(parameters):
-    """generate sequence which rotates blender's object along x-axis and moves along z-axis to make its
+    """ generate sequence which rotates blender's object along x-axis and moves along z-axis to make its
     the lowest point's z-coordinate equal level_z
 
     :param parameters:
