@@ -10,8 +10,10 @@ https://github.com/sanchousic/diploma17-test-data-generation/
 """
 import math
 import random
+
 import numpy as np
-import blender_action
+
+from blender_sequence import action
 
 
 # TODO: everything
@@ -39,7 +41,7 @@ def direct_object_motion(parameters):
         if way + speed > length:
             speed = length - way
         offset = direction * speed
-        sequence.append((blender_action.change_location, (_object, offset[0], offset[1], offset[2])))
+        sequence.append((action.change_location, (_object, offset[0], offset[1], offset[2])))
         way += speed
     return sequence
 
@@ -66,6 +68,6 @@ def z_sitting_x_rotation_motion(parameters):
         if d_angle_max < 0 and current_angle <= limit:
             break
         d_angle = random.uniform(d_angle_min, d_angle_max)
-        sequence.append((blender_action.z_sitting_x_rotation, (_object, d_angle, limit, level_z)))
+        sequence.append((action.z_sitting_x_rotation, (_object, d_angle, limit, level_z)))
         current_angle += d_angle
     return sequence
