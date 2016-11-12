@@ -9,15 +9,18 @@ solution: generate sequence using complex_sequence_generator.probabilistic_gener
 # TODO everything, add snapshot function and blender_nodes file
 import math
 import random
-import mathutils
+
 import numpy as np
+
 import bpy
+import mathutils
 from blender import nodes as b_nodes
-from sequence import action
-from sequence import sequence
-from sequence import generator
 from blender_sequence import generator as b_generator
-from task_3 import complex_sequence_generator
+from sequence import action
+from sequence import generator
+from sequence import sequence
+from tasks import complex_sequence_generator
+
 
 def go():
     # **********
