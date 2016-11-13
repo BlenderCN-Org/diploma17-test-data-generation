@@ -24,6 +24,7 @@ def action_times_with_similar_parameters(parameters):
     pair = (action, action_parameters)
     for i in range(length):
         sequence.append(pair)
+        action(action_parameters)
     return sequence
 
 
@@ -40,5 +41,6 @@ def action_n_times_with_different_parameters(parameters):
     sequence = []
     for action_function_parameters in array_of_action_parameters:
         sequence.append((action, action_function_parameters))
+        action(action_function_parameters)
     return sequence
 

@@ -17,17 +17,17 @@ import numpy as np
 def probabilistic_generator(parameters):
     """generate complex sequence with log using different generators with matrix of probabilities
 
-    :param parameters: (state, operations, probabilities, n) where
+    :param parameters: (state, operations, probabilities, performances) where
         state: which generator will be used in first iteration
         operations: [(sequence_generator_1, sequence_generator_parameters_1, log_num_1), ...] where
             sequence_generator: generator which gives sequence
             sequence_generator_parameters: parameters for sequence_generator
             log_num: id which will be concatenate to current log len(returned_sequence) times
         probabilities: matrix len(operations) x len(operations) != 0
-        n: number of iterations
+        performances: number of iterations
     :return: sequence, log
     """
-    state, operations, probabilities, n = parameters
+    state, operations, probabilities, performances = parameters
     sequence = []
     log = np.zeros((0,))
 
@@ -46,7 +46,7 @@ def probabilistic_generator(parameters):
             next_state += 1
         return np.argmax(weights)
 
-    for i in range(0, n):
+    for i in range(0, performances):
         op, params, log_num = operations[state]
         core_part = op(params)
         # TODO: Think of it

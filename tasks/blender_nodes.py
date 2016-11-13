@@ -11,7 +11,7 @@ import bpy
 """
 How does z_depth count value using parameters (offset, size, use_min, min, use_max, max):
 distance = distance to nearest not empty point on scene
-result = size * (distance + offset)
+result = size * distance + offset
 if use_max and result > max then result = max
 if use_min and result < min then result = min
 """
@@ -117,4 +117,19 @@ def init_for_z_depth_with_noise(parameters):
     viewer_node = tree.nodes.new('CompositorNodeViewer')
     viewer_node.location = 800, 0
     links.new(mix_node.outputs['Image'], viewer_node.inputs['Image'])
+    return
+
+
+def render_and_save_image_from_viewer_node(dir_path, prefix_name, index, extension):
+    """ this function renders and saves image from viewer node
+    with path: 'dir_path + prefix_name + number + . + format' where number is from 0000 to 9999
+
+    :param dir_path: string: with slash in the end
+    :param prefix_name: the first part of file's name
+    :param index: int: number, the last part of file's name, it should be 0..9999
+    :param extension: extension of file without '.', for example: 'png'
+    """
+    file_path = dir_path + str(prefix_name) + str(index).zfill(4) + '.' + extension
+    bpy.ops.render.render()
+    bpy.data.images['Viewer Node'].save_render(filepath=file_path)
     return

@@ -10,6 +10,7 @@ https://github.com/sanchousic/diploma17-test-data-generation/blob/master/sequenc
 """
 import math
 import random
+import mathutils
 
 import numpy as np
 
@@ -31,17 +32,23 @@ def direct_object_motion(parameters):
     _object, direction, length, min_speed, max_speed = parameters
     way = 0
     sequence = []
-    inv = _object.matrix_world.copy()
-    inv.invert()
-    direction = direction * inv
-    direction = np.array([direction[0], direction[1], direction[2]])
-    direction = direction / np.sum(direction)
+    mat = _object.matrix_world.copy()
+    direction = mat * direction - mat * mathutils.Vector((0, 0, 0))
+    scale_x = _object.scale.x
+    scale_y = _object.scale.y
+    scale_z = _object.scale.z
+    direction = np.array([direction[0], direction[1], direction[2]]) / np.array([scale_x, scale_y, scale_z])
+    direction = direction / math.sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2])
     while way < length:
         speed = random.uniform(min_speed, max_speed)
         if way + speed > length:
             speed = length - way
         offset = direction * speed
-        sequence.append((action.change_location, (_object, offset[0], offset[1], offset[2])))
+        print(direction)
+        _action = action.change_location
+        action_parameters = (_object, offset[0], offset[1], offset[2])
+        sequence.append((_action, action_parameters))
+        _action(action_parameters)
         way += speed
     return sequence
 
@@ -68,6 +75,9 @@ def z_sitting_x_rotation_motion(parameters):
         if d_angle_max < 0 and current_angle <= limit:
             break
         d_angle = random.uniform(d_angle_min, d_angle_max)
-        sequence.append((action.z_sitting_x_rotation, (_object, d_angle, limit, level_z)))
+        _action = action.z_sitting_x_rotation
+        action_parameters = (_object, d_angle, limit, level_z)
+        sequence.append((_action, action_parameters))
+        _action(action_parameters)
         current_angle += d_angle
     return sequence
