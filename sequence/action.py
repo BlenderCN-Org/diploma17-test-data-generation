@@ -2,10 +2,6 @@
 Copyright (c) 2016 Alexandr Menkin 
 Use of this source code is governed by an MIT-style license that can be  
 found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-generation/blob/master/LICENSE
-
-This file contains a set of actions.
-Action is a function which destination is to be used in sequential execution in the future.
-Action has only one argument: parameters: it can be just one parameter or tuple of parameters.
 """
 
 

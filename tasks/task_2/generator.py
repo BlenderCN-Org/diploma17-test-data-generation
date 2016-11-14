@@ -2,68 +2,89 @@
 Copyright (c) 2016 Alexandr Menkin 
 Use of this source code is governed by an MIT-style license that can be  
 found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-generation/blob/master/LICENSE
-
-This file contains sequence generators for task 2
 """
 import math
 import random
-import mathutils
-from sequence import action as action
-from sequence import generator as generator
+from sequence import action
+from sequence import sequence
 from blender_sequence import action as b_action
-from blender_sequence import generator as b_generator
+from blender_sequence import sequence as b_sequence
 
 
-# for 1, 5
-def no_motion(parameters):
-    min_frames, max_frames = parameters
-    frames = math.floor(random.uniform(min_frames, max_frames))
-    return generator.action_times_with_similar_parameters((action.empty, (), frames))
+class NoMotion:
+    def __init__(self, min_frames, max_frames):
+        if min_frames > max_frames:
+            min_frames, max_frames = max_frames, min_frames
+        self._min_frames = min_frames
+        self._max_frames = max_frames
+        return
+    def get_sequence(self):
+        frames = random.uniform(self._min_frames, self._max_frames)
+        return sequence.ActionNTimesWithSimilarParameters(action.empty, (), frames)
 
+class DirectionObjectMotionGenerator:
+    def __init__(self, _object, local_direction, distance, min_step, max_step):
+        self._object = _object
+        self._distance = distance
+        self._min_step = min_step
+        self.max_step = max_step
+        self._local_direction = local_direction
+        return
 
-# for 2
-def y_forward_motion(parameters):
-    _object, min_length, max_length, min_speed, max_speed = parameters
-    direction = mathutils.Vector((0.0, 1.0, 0.0))
-    length = random.uniform(min_length, max_length)
-    return b_generator.direct_object_motion((_object, direction, length, min_speed, max_speed))
+    def get_sequence(self):
+        return b_sequence.DirectObjectMotion(self._object, self._local_direction, self._distance, self._min_step,
+                                             self.max_step)
 
+class ZRotationMotion:
+    def __init__(self, _object, min_angle, max_angle, min_d_angle, max_d_angle):
+        self._object = _object
 
-# for 6
-def x_back_motion(parameters):
-    _object, min_length, max_length, min_speed, max_speed = parameters
-    direction = mathutils.Vector((-1.0, 0.0, 0.0))
-    length = random.uniform(min_length, max_length)
-    return b_generator.direct_object_motion((_object, direction, length, min_speed, max_speed))
+        min_angle = math.fabs(min_angle)
+        max_angle = math.fabs(max_angle)
+        if min_angle > max_angle:
+            min_angle, max_angle = max_angle, min_angle
+        self._min_abs_angle = min_angle
+        self._max_abs_angle = max_angle
 
+        min_d_angle = math.fabs(min_d_angle)
+        max_d_angle = math.fabs(max_d_angle)
+        if min_d_angle > max_d_angle:
+            min_d_angle, max_d_angle = max_d_angle, min_d_angle
+        self._min_abs_d_angle = min_d_angle
+        self._max_abs_d_angle = max_d_angle
 
-# for 3, 7
-def z_rotation_motion(parameters):
-    _object, min_angle, max_angle, min_speed, max_speed = parameters
-    angle = random.uniform(min_angle, max_angle)
-    if random.choice([True, False]):
-        angle *= -1
-        min_speed *= -1
-        max_speed *= -1
-    current_angle = 0
-    generated_parameters = []
-    while True:
-        diff = random.uniform(min_speed, max_speed)
-        generated_parameters.append((_object, diff))
-        current_angle += diff
-        if angle > 0:
-            if current_angle >= angle:
-                break
-        else:
-            if current_angle <= angle:
-                break
-    return generator.action_n_times_with_different_parameters((b_action.change_rotation_z, generated_parameters))
+        return
 
+    def get_sequence(self):
 
-# for 4, 8
-def sitting_up_lying_down(parameters):
-    _object, min_speed, max_speed = parameters
-    limit = 90
-    if min_speed < max_speed < 0:
-        limit = 0
-    return b_generator.z_sitting_x_rotation_motion((_object, min_speed, max_speed, limit, 0))
+        min_angle = self._min_abs_angle
+        max_angle = self._max_abs_angle
+        min_d_angle = self._min_abs_d_angle
+        max_d_angle = self._min_abs_d_angle
+
+        is_increase = random.choice([True, False])
+        if not is_increase:
+            min_d_angle, max_d_angle = max_d_angle * -1, min_d_angle * -1
+            min_d_angle, max_d_angle = max_d_angle * -1, min_d_angle * -1
+
+        limit_angle = random.uniform(min_angle, max_angle)
+        angle = 0
+        array_of_action_parameters = []
+        while is_increase and angle < limit_angle or not is_increase and angle > limit_angle:
+            array_of_action_parameters.append((self._object, random.uniform(min_d_angle, max_d_angle)))
+
+        return sequence.ActionNTimesWithDifferentParameters(b_action.change_rotation_z, array_of_action_parameters)
+
+class ZeroZSittingXRotation:
+    def __init__(self, _object, limit_angle, is_increase, min_d_angle, max_d_angle):
+        self._object = _object
+        self._limit_angle = limit_angle
+        self._is_increase = is_increase
+        self._min_d_angle = min_d_angle
+        self._max_d_angle = max_d_angle
+        self._z_level = 0
+        return
+
+    def get_sequence(self):
+        return b_sequence.ZSittingXRotation(self._object, self._limit_angle, self._is_increase, self._min_d_angle,
+                                            self._max_d_angle, self._z_level)
