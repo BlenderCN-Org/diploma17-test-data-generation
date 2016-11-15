@@ -203,10 +203,8 @@ def set_location(parameters):
 
 def z_sit_mesh_down(parameters):
     o, z_level = parameters
-    print(z_level)
     bpy.context.scene.update()
     mw = o.matrix_world.copy()  # Active object's world matrix
-    print(mw)
     glob_vertex_coordinates = [mw * v.co for v in o.data.vertices]  # Global coordinates of vertices
     # Find the lowest Z value amongst the object's verts
     minZ = min([co.z for co in glob_vertex_coordinates])
