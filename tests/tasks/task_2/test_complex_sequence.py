@@ -29,5 +29,5 @@ def test_probabilistic_complex_sequence():
     def check():
         return True
     sequence.handle(_sequence, check, snapshot)
-    print(_sequence.logs_journal)
+    print(_sequence.logs_note)
     return

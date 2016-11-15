@@ -16,12 +16,12 @@ class ProbabilisticComplexSequence:
         self._performances = performances
         self._i = 0
         self._sequence = self._generators[self._state].get_sequence()
-        self.logs_journal = []
+        self.logs_note = []
         return
     def execute(self):
         if self.check():
             self._sequence.execute()
-            self.logs_journal.append(self._logs[self._state])
+            self.logs_note.append(self._logs[self._state])
         return
     def check(self):
         while self._i < self._performances:
