@@ -9,6 +9,7 @@ import mathutils
 import numpy as np
 import math
 import random
+import bpy
 
 
 class DirectObjectMotion:
@@ -25,6 +26,7 @@ class DirectObjectMotion:
         if not self.check():
             return
         if self._way == 0:
+            bpy.context.scene.update()
             mat = self._object.matrix_world.copy()
             direction = mat * self._local_direction - mat * mathutils.Vector((0, 0, 0))
             scale_x = self._object.scale.x
@@ -43,7 +45,7 @@ class DirectObjectMotion:
 class ZSittingXRotation:
     def __init__(self, _object, limit_angle, is_increase, min_d_angle, max_d_angle, z_level):
         self._object = _object
-        self._limit_angle = limit_angle
+        self._limit_angle = limit_angle % 360
         self._is_increase = is_increase
         min_d_angle = math.fabs(min_d_angle)
         max_d_angle = math.fabs(max_d_angle)
@@ -59,10 +61,16 @@ class ZSittingXRotation:
     def execute(self):
         if self.check():
             d_angle = random.uniform(self._min_d_angle, self._max_d_angle)
-            b_action.z_sitting_x_rotation((self._object, d_angle, self._limit_angle, self._z_level))
+            angle = math.degrees(self._object.rotation_euler.x) % 360 + d_angle
+            if self._is_increase and angle > self._limit_angle:
+                angle = self._limit_angle
+            if not self._is_increase and angle < self._limit_angle:
+                angle = self._limit_angle
+            b_action.set_rotation_x((self._object, angle))
+            b_action.z_sit_mesh_down((self._object, self._z_level))
         return
     def check(self):
         if self._is_increase:
-            return self._object.rotation_euler.x < self._limit_angle
+            return math.degrees(self._object.rotation_euler.x) < self._limit_angle
         else:
-            return self._object.rotation_euler.x > self._limit_angle
+            return math.degrees(self._object.rotation_euler.x) > self._limit_angle

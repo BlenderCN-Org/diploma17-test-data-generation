@@ -5,6 +5,7 @@ found in the LICENSE file at https://github.com/sanchousic/diploma17-test-data-g
 """
 import math
 import mathutils
+import bpy
 
 
 def change_scale_x(parameters):
@@ -200,37 +201,13 @@ def set_location(parameters):
     return
 
 
-# TODO: check & optimize
-def z_sitting_x_rotation(parameters):
-    """ x-rotation with sitting on z-level
-
-    :param parameters: (_object, da, limit, level_z)
-    """
-    _object, da, limit, level_z = parameters
-    current_angle = math.degrees(_object.rotation_euler.x)
-
-    # TODO: check & optimize
-    def z_sit_mesh_down(parameters2):
-        """ make mesh_object lowest z coordinate equals level """
-        mesh_object, level = parameters2
-        min_z = 9999.0
-        for vertex in mesh_object.data.vertices:
-            """ object vertices are in object space, translate to world space """
-            v_world = mesh_object.matrix_world * mathutils.Vector((vertex.co[0], vertex.co[1], vertex.co[2]))
-            if v_world[2] < min_z:
-                min_z = v_world[2]
-        mesh_object.location.z -= (min_z - level)
-        return
-
-    if da >= 0 and current_angle >= limit:
-        return
-    if da < 0 and current_angle <= limit:
-        return
-    new_angle = current_angle + da
-    if da >= 0 and new_angle > limit:
-        new_angle = limit
-    if da < 0 and new_angle < limit:
-        new_angle = limit
-    set_rotation_x((_object, new_angle))
-    z_sit_mesh_down((_object, level_z))
-    return
+def z_sit_mesh_down(parameters):
+    o, z_level = parameters
+    print(z_level)
+    bpy.context.scene.update()
+    mw = o.matrix_world.copy()  # Active object's world matrix
+    print(mw)
+    glob_vertex_coordinates = [mw * v.co for v in o.data.vertices]  # Global coordinates of vertices
+    # Find the lowest Z value amongst the object's verts
+    minZ = min([co.z for co in glob_vertex_coordinates])
+    o.location.z -= minZ

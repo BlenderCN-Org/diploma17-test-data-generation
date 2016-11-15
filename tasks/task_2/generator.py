@@ -22,7 +22,7 @@ class NoMotion:
         frames = random.uniform(self._min_frames, self._max_frames)
         return sequence.ActionNTimesWithSimilarParameters(action.empty, (), frames)
 
-class DirectionObjectMotionGenerator:
+class DirectObjectMotionGenerator:
     def __init__(self, _object, local_direction, distance, min_step, max_step):
         self._object = _object
         self._distance = distance
@@ -60,18 +60,20 @@ class ZRotationMotion:
         min_angle = self._min_abs_angle
         max_angle = self._max_abs_angle
         min_d_angle = self._min_abs_d_angle
-        max_d_angle = self._min_abs_d_angle
+        max_d_angle = self._max_abs_d_angle
 
         is_increase = random.choice([True, False])
         if not is_increase:
             min_d_angle, max_d_angle = max_d_angle * -1, min_d_angle * -1
-            min_d_angle, max_d_angle = max_d_angle * -1, min_d_angle * -1
+            min_angle, max_angle = max_angle * -1, min_angle * -1
 
         limit_angle = random.uniform(min_angle, max_angle)
         angle = 0
         array_of_action_parameters = []
         while is_increase and angle < limit_angle or not is_increase and angle > limit_angle:
-            array_of_action_parameters.append((self._object, random.uniform(min_d_angle, max_d_angle)))
+            d_angle = random.uniform(min_d_angle, max_d_angle)
+            array_of_action_parameters.append((self._object, d_angle))
+            angle += d_angle
 
         return sequence.ActionNTimesWithDifferentParameters(b_action.change_rotation_z, array_of_action_parameters)
 
