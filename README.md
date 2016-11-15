@@ -1,2 +1,34 @@
 # diploma17-test-data-generation
-Generation of test data in the form of images using Blender and its Python API
+
+Synopsis:
+Python library for generation of the test data using blender with examples
+
+Code example:
+
+class Sequence:
+	def execute():
+  	""" if actions are not finished, do an action after every call """
+    ...
+  def check():
+    """ returns are actions finished """
+
+"""  """
+sequence.handle(Sequence(...), check, snapshot)
+
+Motivation:
+
+
+
+Installation:
+
+
+API Reference:
+
+
+Tests:
+
+
+Contributors:
+
+
+License:
