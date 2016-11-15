@@ -10,7 +10,7 @@ Generation of the test data in form of z-depth images using Blender's Python API
 4. 'Tests' for previous packages and examples.
 
 ### Motivation
-Generate sequences of z-depth images which contain information about objects in 3d scene and characterized by states of these objects.
+To generate sequences of z-depth images which contain information about objects in 3d scene and characterized by states of these objects.
 
 ### API Reference
 1. Blender's Python API.
